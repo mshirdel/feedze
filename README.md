@@ -1,4 +1,4 @@
-# feedze
+# FeedzE
 Yet another feed reader like Feedly
 
 ## Features
