@@ -1,6 +1,7 @@
 from feedze.settings.base import *  # noqa
 
 SECRET_KEY = "django-insecure-omd9rdz$vea#!d_!54rhq0w=g9==)xhk8b#goq0innp9)+mmb#"
+JWT_SECRET_KEY = "$vea#!d_!54rhq0w=g9"
 
 DEBUG = True
 

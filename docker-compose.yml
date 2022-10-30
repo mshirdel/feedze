@@ -31,4 +31,5 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - SECRET_KEY=7)dl9xm_ac81l#ocbmuhj@rhjhfz%_oc+_+1p8rf&ip0kq@#8c
+      - JWT_SECRET_KEY=_ac81l#ocbmuhj@r
       - ALLOWED_HOSTS=*
