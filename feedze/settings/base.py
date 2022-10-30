@@ -25,7 +25,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "feed"
+    "rest_framework",
+    "rest_framework_simplejwt",
+    "feed",
 ]
 
 MIDDLEWARE = [
@@ -43,8 +45,7 @@ ROOT_URLCONF = "feedze.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates']
-        ,
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
