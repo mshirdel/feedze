@@ -5,6 +5,12 @@ from rest_framework.validators import UniqueValidator
 from user.models import User
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("username", "email", "first_name", "last_name")
+
+
 class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         write_only=True, required=True, validators=[validate_password]

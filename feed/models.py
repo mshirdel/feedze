@@ -74,14 +74,14 @@ class FeedItem(models.Model):
     published_at = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     read_by = models.ManyToManyField(
-        "user.User", related_name="reads", through="feed.models.UserRead"
+        "user.User", related_name="reads", through="feed.UserRead"
     )
     favorite_by = models.ManyToManyField(
-        "user.User", related_name="favorites", through="feed.models.UserFavorite"
+        "user.User", related_name="favorites", through="feed.UserFavorite"
     )
 
     bookmarked_by = models.ManyToManyField(
-        "user.User", related_name="bookmarks", through="feed.models.UserBookmark"
+        "user.User", related_name="bookmarks", through="feed.UserBookmark"
     )
 
     objects = FeedItemQuerySet.as_manager()
