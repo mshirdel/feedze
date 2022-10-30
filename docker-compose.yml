@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:12.3-alpine
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=feedze
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres", "-d", "feedze" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: on-failure
+  web:
+    build: .
+    command: sh -c "python manage.py migrate && gunicorn feedze.wsgi -b 0.0.0.0:8000"
+    depends_on:
+      - db
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_ENV=production
+      - POSTGRES_NAME=feedze
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - SECRET_KEY=7)dl9xm_ac81l#ocbmuhj@rhjhfz%_oc+_+1p8rf&ip0kq@#8c
+      - ALLOWED_HOSTS=*

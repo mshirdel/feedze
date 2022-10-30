@@ -1,0 +1,6 @@
+flake8==5.0.4
+black==22.10.0
+django-debug-toolbar==3.7.0
+django-extensions==3.2.1
+pre-commit==2.20.0
+ipython==8.5.0
