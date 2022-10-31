@@ -111,6 +111,8 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 20,
 }
 
 JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "$vea#!d_!54rhq0w=g9")

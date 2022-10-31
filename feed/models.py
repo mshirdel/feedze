@@ -39,7 +39,7 @@ class Feed(models.Model):
     def follow_by_user_id(self, user_id: int):
         self.followers.add(user_id)
 
-    def remove_follow_by_user_id(self, user_id: int):
+    def unfollow_by_user_id(self, user_id: int):
         self.followers.remove(user_id)
 
 
@@ -69,7 +69,7 @@ class FeedItem(models.Model):
     )
     title = models.CharField(max_length=150)
     description = models.TextField()
-    link = models.URLField()
+    link = models.URLField(unique=True, db_index=True)
     author = models.TextField(null=True, blank=True)
     published_at = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
