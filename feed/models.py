@@ -36,10 +36,10 @@ class Feed(models.Model):
     def __str__(self):
         return f"{self.title}"
 
-    def follow_by_user_id(self, user_id: int):
+    def followed_by_user(self, user_id: int):
         self.followers.add(user_id)
 
-    def unfollow_by_user_id(self, user_id: int):
+    def unfollow_by_user(self, user_id: int):
         self.followers.remove(user_id)
 
 

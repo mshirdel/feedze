@@ -21,6 +21,23 @@ class FeedViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewS
         import_feed_task.delay(url)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+    @action(methods=["post"], detail=True)
+    def follow(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.followed_by_user(request.user.id)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @follow.mapping.delete
+    def unfollow(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.unfollow_by_user(request.user.id)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=["get"], detail=False, url_path="user-following")
+    def user_following(self, request, *args, **kwargs):
+        self.queryset = self.queryset.filter(followers=request.user)
+        return self.list(request, *args, **kwargs)
+
 
 class FeedItemViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
     model = FeedItem
