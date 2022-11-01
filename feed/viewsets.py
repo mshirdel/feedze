@@ -66,7 +66,22 @@ class FeedItemViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericV
 
     @action(methods=["get"], detail=False, url_path="my-favorites")
     def my_favorites(self, request, *args, **kwargs):
-        self.queryset = self.queryset.filter(
-            users_favorite__user_id=request.user.id
-        ).prefetch_related("users_favorite")
+        self.queryset = self.queryset.filter(users_favorite__user_id=request.user.id)
+        return self.list(request, *args, **kwargs)
+
+    @action(methods=["post"], detail=True)
+    def bookmarked(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.bookmark_by_user_id(request.user.id)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @bookmarked.mapping.delete
+    def delete_bookmarked(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.remove_bookmark_by_user_id(request.user.id)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=["get"], detail=False)
+    def bookmarks(self, request, *args, **kwargs):
+        self.queryset = self.queryset.filter(users_bookmark__user_id=request.user.id)
         return self.list(request, *args, **kwargs)
