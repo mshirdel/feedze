@@ -57,3 +57,17 @@ services:
     env_file:
       - .env
     restart: on-failure
+  celery_worker_beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: "celery -A feedze beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+    depends_on:
+      - rabbitmq
+      - db
+    links:
+      - "db:database"
+      - "rabbitmq:rabbitmq"
+    env_file:
+      - .env
+    restart: on-failure

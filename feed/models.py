@@ -73,6 +73,7 @@ class FeedItem(models.Model):
     author = models.TextField(null=True, blank=True)
     published_at = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
     read_by = models.ManyToManyField(
         "user.User", related_name="reads", through="feed.UserRead"
     )
@@ -85,6 +86,9 @@ class FeedItem(models.Model):
     )
 
     objects = FeedItemQuerySet.as_manager()
+
+    class Meta:
+        ordering = ["-published_at"]
 
     def __str__(self):
         return f"{self.title}"

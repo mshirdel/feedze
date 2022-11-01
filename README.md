@@ -43,3 +43,15 @@ We use Docker and Docker Compose for easy deployment:
 ```shell
 docker-compose up --build
 ```
+
+## Local development environment
+First of all set DJANGO_ENV:
+```shell
+export DJANGO_ENV=development
+```
+For celery worker and celery beat:
+```shell
+celery -A feedze worker -l info
+celery -A feedze beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+```
+

@@ -10,3 +10,4 @@ uritemplate==4.1.1
 PyYAML==6.0
 python-dateutil==2.8.2
 drf_yasg
+django-celery-beat==2.4.0
