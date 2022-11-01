@@ -20,3 +20,5 @@ DATABASES = {
         "PORT": 5432,
     },
 }
+
+CELERY_BROKER_URL = os.environ["CELERY_BROKER_URL"]

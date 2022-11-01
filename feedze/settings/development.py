@@ -20,3 +20,5 @@ DATABASES = {
 
 INSTALLED_APPS += ["debug_toolbar", "django_extensions"]  # noqa
 MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]  # noqa
+
+CELERY_BROKER_URL = "amqp://localhost"

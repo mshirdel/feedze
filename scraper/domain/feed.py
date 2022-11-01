@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from time import mktime
 
+from scraper.exceptions import FeedException
+
 
 @dataclass
 class Feed:
@@ -12,6 +14,11 @@ class Feed:
     updated: str = None
     updated_parsed: object = None
     image_url: str = None
+    description: str = None
+
+    def validate(self):
+        if not self.title or len(self.title) == 0:
+            raise FeedException("Feed title not provided")
 
     @property
     def published_datetime(self):

@@ -20,7 +20,9 @@ class FeedScraper:
         self.feed.published_parsed = parsed_feed.get("published_parsed")
         self.feed.updated = parsed_feed.get("updated")
         self.feed.updated_parsed = parsed_feed.get("updated_parsed")
-        self.feed.image_url = parsed_feed.get("image").get("href")
+        self.feed.image_url = parsed_feed.get("image", {}).get("href")
+        self.feed.description = parsed_feed.get("description", "")
+        self.feed.validate()
 
     def _convert_entries(self, parsed_entries):
         for entry in parsed_entries:

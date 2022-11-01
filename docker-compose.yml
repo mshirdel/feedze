@@ -25,11 +25,35 @@ services:
       - .:/code
     ports:
       - "8000:8000"
+    env_file:
+      - .env
+  rabbitmq:
+    hostname: rabbit
+    image: rabbitmq:3-management-alpine
     environment:
-      - DJANGO_ENV=production
-      - POSTGRES_NAME=feedze
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - SECRET_KEY=7)dl9xm_ac81l#ocbmuhj@rhjhfz%_oc+_+1p8rf&ip0kq@#8c
-      - JWT_SECRET_KEY=_ac81l#ocbmuhj@r
-      - ALLOWED_HOSTS=*
+      - RABBITMQ_DEFAULT_USER=root
+      - RABBITMQ_DEFAULT_PASS=pass4root
+      - RABBITMQ_DEFAULT_VHOST=feedze
+    ports:
+      - 5673:5672
+      - 15673:15672
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    restart: on-failure
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: "celery -A feedze worker -l INFO"
+    depends_on:
+      - rabbitmq
+      - db
+    links:
+      - "db:database"
+      - "rabbitmq:rabbitmq"
+    env_file:
+      - .env
+    restart: on-failure

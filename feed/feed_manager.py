@@ -2,6 +2,7 @@ from datetime import datetime
 from time import mktime
 
 from scraper.domain.feed import Feed
+from scraper.exceptions import FeedException
 from scraper.feed_scrapper import FeedScraper
 from feed.models import Feed as FeedModel, FeedItem
 
@@ -26,22 +27,28 @@ class FeedUpdater:
 
 class FeedFetcher:
     def __init__(self, url):
-        scraper = FeedScraper(url=url)
-        scraper.scrap()
-        feed, _ = FeedModel.objects.get_or_create(
-            feed_url=url,
-            title=scraper.feed.title,
-            link=scraper.feed.link,
-            published=scraper.feed.published_datetime,
-            last_update=scraper.feed.updated_datetime,
-            image=scraper.feed.image_url,
-        )
-        for entry in scraper.entries:
-            FeedItem.objects.get_or_create(
-                feed=feed,
-                title=entry.title,
-                description=entry.title,
-                link=entry.link,
-                author=entry.author,
-                published_at=datetime.utcfromtimestamp(mktime(entry.published_parsed)),
+        try:
+            scraper = FeedScraper(url=url)
+            scraper.scrap()
+            feed, _ = FeedModel.objects.get_or_create(
+                feed_url=url,
+                title=scraper.feed.title,
+                link=scraper.feed.link,
+                published=scraper.feed.published_datetime,
+                last_update=scraper.feed.updated_datetime,
+                image=scraper.feed.image_url,
+                description=scraper.feed.description,
             )
+            for entry in scraper.entries:
+                FeedItem.objects.get_or_create(
+                    feed=feed,
+                    title=entry.title,
+                    description=entry.title,
+                    link=entry.link,
+                    author=entry.author,
+                    published_at=datetime.utcfromtimestamp(
+                        mktime(entry.published_parsed)
+                    ),
+                )
+        except FeedException:
+            pass
