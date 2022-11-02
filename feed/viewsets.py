@@ -53,6 +53,12 @@ class FeedItemViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericV
         return super().get_queryset()
 
     @action(methods=["post"], detail=True)
+    def read(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.read_by_user_id(request.user.id)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=["post"], detail=True)
     def favorite(self, request, *args, **kwargs):
         instance = self.get_object()
         instance.favorite_by_user_id(request.user.id)

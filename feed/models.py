@@ -1,4 +1,3 @@
-from dateutil.parser import parse
 from django.db import models
 from django.db.models import F
 
@@ -91,18 +90,7 @@ class FeedItem(models.Model):
         ordering = ["-published_at"]
 
     def __str__(self):
-        return f"{self.title}"
-
-    @classmethod
-    def import_from_rss(cls, feed_id, feed_item):
-        return cls(
-            feed_id=feed_id,
-            title=feed_item.get("title", ""),
-            link=feed_item.get("link", ""),
-            description=feed_item.get("description", ""),
-            author=feed_item.get("author", ""),
-            published_at=parse(feed_item.get("published", "")),
-        )
+        return f"{self.title} - {self.feed.title}"
 
     def read_by_user_id(self, user_id: int) -> None:
         self.read_by.add(user_id)

@@ -6,7 +6,7 @@ from feed.models import Feed
 
 @shared_task
 def import_feed_task(url: str):
-    FeedFetcher(url)
+    FeedFetcher(url).fetch()
 
 
 @celery_app.task
